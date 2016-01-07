@@ -1,7 +1,6 @@
 {
   "name": "enterprisephp/display-bundle",
   "type": "symfony-bundle",
-  "version": "0.0.1-dev",
   "description": "This Bundle provides generate view for given object",
   "keywords": ["display"],
   "homepage": "https://enterprisephp.github.io",
