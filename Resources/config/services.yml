@@ -1,1 +1,8 @@
 services:
+  ojs.twig.display_extension:
+    class: EP\DisplayBundle\Service\Twig\DisplayExtension
+    arguments:
+      - "@translator"
+      - "@annotation_reader"
+    tags:
+      - { name: twig.extension }
