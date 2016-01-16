@@ -22,13 +22,7 @@ class DisplayExtension extends \Twig_Extension
      * exclude vars for basic entity
      * @var array
      */
-    private $excludeVars = ['locale','contentChanged','currentLocale','defaultLocale','publicURI','currentTranslation'];
-
-    /**
-     * exclude vars for translation entity
-     * @var array
-     */
-    private $translationExcludeVars = ['locale', 'id', 'translatable'];
+    private $excludeVars = [];
 
     /**
      * expose vars for basic entity

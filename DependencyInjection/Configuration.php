@@ -20,9 +20,35 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('ep_display');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode('global')
+                    ->children()
+                        ->scalarNode('image_render')
+                            ->defaultTrue()
+                        ->end()
+                        ->scalarNode('file_render')
+                            ->defaultTrue()
+                        ->end()
+                        ->scalarNode('array_collection_render')
+                            ->defaultTrue()
+                        ->end()
+                        ->integerNode('collection_item_count')
+                            ->defaultValue(10)
+                        ->end()
+                        ->scalarNode('templating')
+                            ->defaultValue("A2lixTranslationFormBundle::default.html.twig")
+                        ->end()
+                        ->arrayNode('exclude_vars')
+                            ->beforeNormalization()
+                                ->ifString()
+                                ->then(function($v) { return preg_split('/\s*,\s*/', $v); })
+                            ->end()
+                            ->prototype('scalar')->end()
+                        ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }
