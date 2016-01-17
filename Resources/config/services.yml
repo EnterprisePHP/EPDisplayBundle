@@ -4,5 +4,6 @@ services:
     arguments:
       - "@translator"
       - "@annotation_reader"
+      - "@twig"
     tags:
       - { name: twig.extension }

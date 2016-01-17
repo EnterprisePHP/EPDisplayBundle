@@ -5,6 +5,7 @@ namespace EP\DisplayBundle\Service\Twig;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Annotations\Reader;
+use Twig_Environment;
 
 class DisplayExtension extends \Twig_Extension
 {
@@ -17,6 +18,11 @@ class DisplayExtension extends \Twig_Extension
      * @var Reader
      */
     private $reader;
+
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
 
     /**
      * exclude vars for basic entity
@@ -50,10 +56,15 @@ class DisplayExtension extends \Twig_Extension
      */
     private $normalizedEntity;
 
-    public function __construct(TranslatorInterface $translator, Reader $reader)
+    public function __construct(
+        TranslatorInterface $translator,
+        Reader $reader,
+        Twig_Environment $twig
+    )
     {
         $this->translator = $translator;
         $this->reader = $reader;
+        $this->twig = $twig;
     }
 
     public function getFunctions()
@@ -70,7 +81,11 @@ class DisplayExtension extends \Twig_Extension
      */
     public function getDisplay($entity, $options = array())
     {
-        return true;
+        $this->normalizeConfigurations();
+    }
+
+    private function normalizeConfigurations()
+    {
     }
 
     public function getName()
