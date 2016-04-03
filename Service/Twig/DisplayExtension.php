@@ -81,6 +81,9 @@ class DisplayExtension extends \Twig_Extension
      */
     public function getDisplay($entity, $options = array())
     {
+        if(!method_exists($entity, 'display')){
+            throw new Exception('Please create an public display method for object');
+        }
         $this->normalizeConfigurations();
     }
 
