@@ -52,10 +52,10 @@ class EPDisplayExtension extends Extension
         }
 
         //set templating config as param
-        if(isset($globalConfig['templating'])){
-            $container->setParameter('ep_display.config.templating', $globalConfig['templating']);
+        if(isset($globalConfig['template'])){
+            $container->setParameter('ep_display.config.template', $globalConfig['template']);
         }else{
-            $container->setParameter('ep_display.config.templating', 'EPDisplayBundle:display.html.twig');
+            $container->setParameter('ep_display.config.template', 'EPDisplayBundle:display.html.twig');
         }
 
         //set exclude_vars config as param
