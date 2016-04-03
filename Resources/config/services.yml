@@ -5,5 +5,11 @@ services:
       - "@translator"
       - "@annotation_reader"
       - "@twig"
+      - "%ep_display.config.image_render%"
+      - "%ep_display.config.file_render%"
+      - "%ep_display.config.template%"
+      - "%ep_display.config.exclude_vars%"
+      - "%ep_display.config.array_collection_render%"
+      - "%ep_display.config.collection_item_count%"
     tags:
       - { name: twig.extension }
