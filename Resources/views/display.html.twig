@@ -1,0 +1,10 @@
+<table class="table">
+    <tbody>
+        {% for fieldName,fieldValue in normalizedEntity %}
+            <tr>
+                <th>{{ fieldName|trans }}</th>
+                <th>{{ fieldValue|raw }}</th>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

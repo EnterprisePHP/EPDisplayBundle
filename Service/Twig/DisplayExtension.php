@@ -125,6 +125,7 @@ class DisplayExtension extends \Twig_Extension
         $this->setupAnnotationOptions();
         $this->setupTemplateOptions($options);
         $this->normalizedEntity = $this->normalizeEntity();
+        return $this->createView();
     }
 
     private function setupBundleConfigs()
@@ -304,18 +305,6 @@ class DisplayExtension extends \Twig_Extension
         }
     }
 
-    /**
-     * @param $var
-     */
-    private function addExcludeVar($var)
-    {
-        if(!in_array($var, $this->excludeVars)){
-            $this->excludeVars[] = $var;
-            return;
-        }
-        return;
-    }
-
     private function normalizeBool($fieldName)
     {
         if($this->normalizedEntity[$fieldName]){
@@ -353,6 +342,25 @@ class DisplayExtension extends \Twig_Extension
         if($fieldValue instanceof \DateTime){
             $this->normalizedEntity[$fieldName] = $fieldValue->format('Y-m-d H:i:s');
         }
+    }
+
+    private function createView()
+    {
+        return $this->twig->render($this->configs['template'], [
+            'normalizedEntity' => $this->normalizedEntity
+        ]);
+    }
+
+    /**
+     * @param $var
+     */
+    private function addExcludeVar($var)
+    {
+        if(!in_array($var, $this->excludeVars)){
+            $this->excludeVars[] = $var;
+            return;
+        }
+        return;
     }
 
     /**
