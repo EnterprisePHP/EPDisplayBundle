@@ -16,8 +16,6 @@ class Display extends Annotation
 
     public $template;
 
-    public $exclude_vars;
-
     public $array_collection_render;
 
     public $collection_item_count;
