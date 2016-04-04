@@ -95,3 +95,47 @@ ep_display:
         array_collection_render: true # (optinal) defaults to true
         collection_item_count: 5 # (optinal) defaults to 10
 ```
+
+Usage
+=====
+If you do not want to any extreme things. Only display on template;
+```twig
+{{ display(entity) }} # so easy isn't it 😉
+```
+
+You can override all bundle configs via class annotation: <br>
+related : https://github.com/EnterprisePHP/EPDisplayBundle/blob/master/Annotation/Display.php#L11
+```php
+namespace AppBundle\Entity;
+
+use EP\DisplayBundle\Annotation as Display;
+
+/**
+ * @Display\Display(
+ *     image_render=false, # optinal
+ *     file_render=false, # optinal
+ *     template="my_entity_special_template.html.twig", # optinal
+ *     array_collection_render=true, # optinal
+ *     collection_item_count=8, # optinal
+ * )
+ */
+class MyEntity
+{
+```
+
+If you exclude spesific fields of entity use Exclude annotation: <br>
+related : https://github.com/EnterprisePHP/EPDisplayBundle/blob/master/Annotation/Exclude.php
+
+```php
+namespace AppBundle\Entity;
+
+use EP\DisplayBundle\Annotation as Display;
+
+class DummyEntity
+{
+  /**
+   * @Display\Exclude
+   */
+  protected $unPublicfieldForOnlyThisEntity;
+```
+
