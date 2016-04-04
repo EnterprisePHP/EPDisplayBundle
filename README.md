@@ -138,4 +138,74 @@ class DummyEntity
    */
   protected $unPublicfieldForOnlyThisEntity;
 ```
+Expose field. All fields defaultly exposes but if you excluded from config but only one time you want to expose this field;
+```php
+namespace AppBundle\Entity;
 
+use EP\DisplayBundle\Annotation as Display;
+
+class DummyEntity
+{
+  /**
+   * @Display\Expose
+   */
+  protected $oneTimeExposeField;
+```
+
+File expose with link;
+```php
+namespace AppBundle\Entity;
+
+use EP\DisplayBundle\Annotation as Display;
+
+class DummyEntity
+{
+  /**
+   * @Display\File(path="uploads/files")
+   */
+  protected $mainFile;
+```
+
+Image expose with img tag;
+
+```php
+namespace AppBundle\Entity;
+
+use EP\DisplayBundle\Annotation as Display;
+
+class DummyEntity
+{
+  /**
+   * @Display\Image(
+   *    path="uploads/files",
+   *    height="50",
+   *    width="70",
+   * )
+   */
+  protected $cover;
+```
+
+You can spesify all configs from template as second param on display function;
+```twig
+{{ display(entity, {
+    files: {
+        my_file: {
+            path: "web/uploads"
+        }
+    },
+    images: {
+        header: {
+            path: "web/images",
+            width: "70",
+            height: "50"
+        }
+    },
+    exclude: "myVeryPrivateField", // can be array
+    expose: "onlyForThisPageExposeVar", // can be array
+    image_render: true,
+    file_render: true,
+    array_collection_render: false,
+    collection_item_count: 90,
+    template: "my_stylish_template.html.twig"
+}) }}
+```
