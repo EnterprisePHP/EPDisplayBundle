@@ -1,5 +1,5 @@
 services:
-  ojs.twig.display_extension:
+  ep.twig.display_extension:
     class: EP\DisplayBundle\Service\Twig\DisplayExtension
     arguments:
       - "@translator"
