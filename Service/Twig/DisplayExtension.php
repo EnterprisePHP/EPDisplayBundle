@@ -3,6 +3,7 @@
 namespace EP\DisplayBundle\Service\Twig;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Collections\ArrayCollection;
 use EP\DisplayBundle\Annotation\Display;
 use EP\DisplayBundle\Annotation\Exclude;
 use EP\DisplayBundle\Annotation\Expose;
@@ -123,6 +124,7 @@ class DisplayExtension extends \Twig_Extension
         $this->setupBundleConfigs();
         $this->setupAnnotationOptions();
         $this->setupTemplateOptions($options);
+        $this->normalizedEntity = $this->normalizeEntity();
     }
 
     private function setupBundleConfigs()
@@ -231,6 +233,78 @@ class DisplayExtension extends \Twig_Extension
     }
 
     /**
+     * @return mixed
+     */
+    private function normalizeEntity()
+    {
+        $this->normalizedEntity = $this->entity->display();
+        $this->customNormalize();
+        foreach ($this->normalizedEntity as $fieldName => $fieldValue) {
+            if (in_array($fieldName, $this->excludeVars)) {
+                unset($this->normalizedEntity[$fieldName]);
+                continue;
+            } elseif (empty($fieldValue)) {
+                $this->normalizedEntity[$fieldName] = '-';
+                continue;
+            }
+            if (is_bool($fieldValue)) {
+                $this->normalizeBool($fieldName);
+            }
+            if (is_object($fieldValue)) {
+                $this->normalizeObject($fieldName);
+            }
+        }
+        return $this->normalizedEntity;
+    }
+
+    private function customNormalize()
+    {
+        $this->normalizeFiles();
+        $this->normalizeImages();
+
+        return;
+    }
+
+    private function normalizeFiles()
+    {
+        if(empty($this->files)){
+            return;
+        }
+        foreach($this->files as $fileKey => $file){
+            if(!array_key_exists($fileKey, $this->normalizedEntity)){
+                throw new Exception('This file field not exists!');
+            }
+            if(!empty($this->normalizedEntity[$fileKey])) {
+                if($this->configs['file_render'] == true){
+                    $this->normalizedEntity[$fileKey] = '<a href="' . $this->files[$fileKey]["path"] . '/' . $this->normalizedEntity[$fileKey] . '" target="_blank">' . $this->normalizedEntity[$fileKey] . '</a>';
+                }
+            }else{
+                $this->normalizedEntity[$fileKey] = '-';
+            }
+        }
+    }
+
+    private function normalizeImages()
+    {
+        if(empty($this->images)){
+            return;
+        }
+        foreach($this->images as $imageKey => $image){
+            if(!array_key_exists($imageKey, $this->normalizedEntity)){
+                throw new Exception('This image field not exists!');
+            }
+            if(!empty($this->normalizedEntity[$imageKey])) {
+                if($this->configs['image_render'] == true){
+                    $filteredImage = $image['path'].$this->normalizedEntity[$imageKey];
+                    $this->normalizedEntity[$imageKey] = '<a href="'.$filteredImage.'" target="_blank"><img src="'.$filteredImage.'"/></a>';
+                }
+            }else{
+                $this->normalizedEntity[$imageKey] = '-';
+            }
+        }
+    }
+
+    /**
      * @param $var
      */
     private function addExcludeVar($var)
@@ -240,6 +314,45 @@ class DisplayExtension extends \Twig_Extension
             return;
         }
         return;
+    }
+
+    private function normalizeBool($fieldName)
+    {
+        if($this->normalizedEntity[$fieldName]){
+            $this->normalizedEntity[$fieldName] = '<i class="fa fa-check-circle-o" style="color:green"></i>';
+        }else{
+            $this->normalizedEntity[$fieldName] = '<i class="fa fa-times" style="color:red"></i>';
+        }
+    }
+
+    private function normalizeObject($fieldName)
+    {
+        $fieldValue = $this->normalizedEntity[$fieldName];
+        if(method_exists($fieldValue, '__toString')){
+            $this->normalizedEntity[$fieldName] = (string)$fieldValue;
+        }
+        if($fieldValue instanceof ArrayCollection && $this->configs['array_collection_render'] == true){
+            $counter = 0;
+            foreach($fieldValue as $collectionObject){
+                if($counter >= $this->configs['collection_item_count']){
+                    continue;
+                }
+                if(method_exists($collectionObject, '__toString')){
+                    $objectToString = (string)$collectionObject;
+                    if(is_object($this->normalizedEntity[$fieldName])){
+                        $this->normalizedEntity[$fieldName] = $objectToString;
+                    }else{
+                        $this->normalizedEntity[$fieldName].= '<br>'.$objectToString;
+                    }
+                    $counter = $counter+1;
+                }
+            }
+        }elseif($fieldValue instanceof ArrayCollection && $this->configs['array_collection_render'] == false){
+            unset($this->normalizedEntity[$fieldName]);
+        }
+        if($fieldValue instanceof \DateTime){
+            $this->normalizedEntity[$fieldName] = $fieldValue->format('Y-m-d H:i:s');
+        }
     }
 
     /**
