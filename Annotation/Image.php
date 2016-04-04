@@ -8,7 +8,7 @@ namespace EP\DisplayBundle\Annotation;
  */
 class Image
 {
-    private $filter;
+    private $path;
 
     public function __construct($options)
     {
@@ -20,8 +20,8 @@ class Image
         }
     }
 
-    public function getFilter()
+    public function getPath()
     {
-        return $this->filter;
+        return $this->path;
     }
 }
