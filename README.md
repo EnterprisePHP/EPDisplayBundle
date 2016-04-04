@@ -4,6 +4,11 @@ Easily generate view for given entity/object
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/9e66e05d-ff79-4a8b-9cb0-dd547f95c162/small.png)](https://insight.sensiolabs.com/projects/9e66e05d-ff79-4a8b-9cb0-dd547f95c162)
 [![knpbundles.com](http://knpbundles.com/EnterprisePHP/EPDisplayBundle/badge-short)](http://knpbundles.com/EnterprisePHP/EPDisplayBundle)
 
+Very Basic Screenshot;
+---------------------
+![image](https://cloud.githubusercontent.com/assets/4572080/14238217/cd669910-fa36-11e5-9623-d4d150065659.png)
+
+
 ### Related Links;###
   - https://github.com/ojs/ojs/issues/990
   - https://github.com/ojs/ojs/blob/master/src/Ojs/CoreBundle/Service/Twig/DisplayExtension.php
