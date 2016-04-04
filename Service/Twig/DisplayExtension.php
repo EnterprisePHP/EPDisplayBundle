@@ -320,7 +320,7 @@ class DisplayExtension extends \Twig_Extension
         if(method_exists($fieldValue, '__toString')){
             $this->normalizedEntity[$fieldName] = (string)$fieldValue;
         }
-        if($fieldValue instanceof ArrayCollection && $this->configs['array_collection_render'] == true){
+        if(method_exists($this->normalizedEntity[$fieldName], 'first') && $this->configs['array_collection_render'] == true){
             $counter = 0;
             foreach($fieldValue as $collectionObject){
                 if($counter >= $this->configs['collection_item_count']){
@@ -336,7 +336,7 @@ class DisplayExtension extends \Twig_Extension
                     $counter = $counter+1;
                 }
             }
-        }elseif($fieldValue instanceof ArrayCollection && $this->configs['array_collection_render'] == false){
+        }elseif(method_exists($this->normalizedEntity[$fieldName], 'first') && $this->configs['array_collection_render'] == false){
             unset($this->normalizedEntity[$fieldName]);
         }
         if($fieldValue instanceof \DateTime){
