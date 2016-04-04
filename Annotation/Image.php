@@ -10,6 +10,10 @@ class Image
 {
     private $path;
 
+    private $height;
+
+    private $width;
+
     public function __construct($options)
     {
         foreach ($options as $key => $value) {
@@ -23,5 +27,21 @@ class Image
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWidth()
+    {
+        return $this->width;
     }
 }

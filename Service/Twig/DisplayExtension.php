@@ -155,6 +155,8 @@ class DisplayExtension extends \Twig_Extension
                     $this->files[$property->name] = $file;
                 } elseif ($annotation instanceof Image){
                     $image['path'] = $annotation->getPath();
+                    $image['height'] = $annotation->getHeight();
+                    $image['width'] = $annotation->getWidth();
                     $this->images[$property->name] = $image;
                 }
             }
@@ -277,7 +279,7 @@ class DisplayExtension extends \Twig_Extension
             }
             if(!empty($this->normalizedEntity[$fileKey])) {
                 if($this->configs['file_render'] == true){
-                    $this->normalizedEntity[$fileKey] = '<a href="' . $this->files[$fileKey]["path"] . '/' . $this->normalizedEntity[$fileKey] . '" target="_blank">' . $this->normalizedEntity[$fileKey] . '</a>';
+                    $this->normalizedEntity[$fileKey] = '<a href="' . $this->files[$fileKey]["path"] . $this->normalizedEntity[$fileKey] . '" target="_blank">' . $this->normalizedEntity[$fileKey] . '</a>';
                 }
             }else{
                 $this->normalizedEntity[$fileKey] = '-';
@@ -296,8 +298,10 @@ class DisplayExtension extends \Twig_Extension
             }
             if(!empty($this->normalizedEntity[$imageKey])) {
                 if($this->configs['image_render'] == true){
+                    $width = isset($image['width'])? $image['width']: '';
+                    $height = isset($image['height'])? $image['height']: '';
                     $filteredImage = $image['path'].$this->normalizedEntity[$imageKey];
-                    $this->normalizedEntity[$imageKey] = '<a href="'.$filteredImage.'" target="_blank"><img src="'.$filteredImage.'"/></a>';
+                    $this->normalizedEntity[$imageKey] = '<a href="'.$filteredImage.'" target="_blank"><img height="'.$height.'" width="'.$width.'" src="'.$filteredImage.'"/></a>';
                 }
             }else{
                 $this->normalizedEntity[$imageKey] = '-';
