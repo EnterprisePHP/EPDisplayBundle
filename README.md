@@ -209,3 +209,13 @@ You can spesify all configs from template as second param on display function;
     template: "my_stylish_template.html.twig"
 }) }}
 ```
+
+Reporting an issue or a feature request
+---------------------------------------
+
+Issues and feature requests are tracked in the [Github issue tracker](https://github.com/EnterprisePHP/EPDisplayBundle).
+
+When reporting a bug, it may be a good idea to reproduce it in a basic project
+built using the [Symfony Standard Edition](https://github.com/symfony/symfony-standard)
+to allow developers of the bundle to reproduce the issue by simply cloning it
+and following some steps.
