@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue(10)
                         ->end()
                         ->scalarNode('template')
-                            ->defaultValue("EPDisplayBundle:display.html.twig")
+                            ->defaultValue("EPDisplayBundle::display.html.twig")
                         ->end()
                         ->arrayNode('exclude_vars')
                             ->beforeNormalization()
