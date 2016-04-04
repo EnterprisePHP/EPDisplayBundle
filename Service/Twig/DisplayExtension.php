@@ -122,7 +122,7 @@ class DisplayExtension extends \Twig_Extension
         $this->entity = $entity;
         $this->setupBundleConfigs();
         $this->setupAnnotationOptions();
-        $this->normalizeConfigurations();
+        $this->setupTemplateOptions($options);
     }
 
     private function setupBundleConfigs()
@@ -180,8 +180,54 @@ class DisplayExtension extends \Twig_Extension
         }
     }
 
-    private function normalizeConfigurations()
+    /**
+     * @param array $options
+     */
+    private function setupTemplateOptions($options = [])
     {
+        if(isset($options['files'])){
+            if(is_array($options['files'])){
+                $this->files = array_merge($this->files, $options['files']);
+            }else{
+                throw new Exception('files option must be an array');
+            }
+        }
+        if(isset($options['images'])){
+            if(is_array($options['images'])){
+                $this->images = array_merge($this->images, $options['images']);
+            }else{
+                throw new Exception('images option must be an array');
+            }
+        }
+        if(isset($options['exclude'])){
+            if(is_array($options['exclude'])){
+                $this->excludeVars = array_merge($this->excludeVars, $options['exclude']);
+            }elseif(is_string($options['exclude'])){
+                $this->excludeVars[] = $options['exclude'];
+            }else{
+                throw new Exception('exclude option must be array or string');
+            }
+        }
+        if(isset($options['expose'])){
+            if(is_array($options['expose'])){
+                $this->exposeVars = array_merge($this->exposeVars, $options['expose']);
+            }elseif(is_string($options['expose'])){
+                $this->exposeVars[] = $options['expose'];
+            }else{
+                throw new Exception('expose option must be array or string');
+            }
+            foreach($this->exposeVars as $expose){
+                if(in_array($expose, $this->excludeVars)){
+                    $this->excludeVars = array_diff($this->excludeVars, $this->exposeVars);
+                }
+            }
+        }
+
+        $this->configs['image_render'] = isset($options['image_render']) ? $options['image_render'] : $this->configs['image_render'];
+        $this->configs['file_render'] = isset($options['file_render']) ? $options['file_render'] : $this->configs['file_render'];
+        $this->configs['array_collection_render'] = isset($options['array_collection_render']) ? $options['array_collection_render'] : $this->configs['array_collection_render'];
+        $this->configs['collection_item_count'] = isset($options['collection_item_count']) ? $options['collection_item_count'] : $this->configs['collection_item_count'];
+        $this->configs['template'] = isset($options['template']) ? $options['template'] : $this->configs['template'];
     }
 
     /**
