@@ -70,7 +70,7 @@ use DisplayTrait on which you want to display objects/entities (!important):
 
 namespace AppBundle\Entity;
 
-use EP\DoctrineLockBundle\Traits\LockableTrait;
+use EP\DisplayBundle\Entity\DisplayTrait;
 
 class MyEntity
 {
