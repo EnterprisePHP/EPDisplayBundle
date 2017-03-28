@@ -256,6 +256,9 @@ class DisplayExtension extends \Twig_Extension
             if (is_object($fieldValue)) {
                 $this->normalizeObject($fieldName);
             }
+            if (is_array($fieldValue)) {
+                $this->normalizeArray($fieldName);
+            }
         }
         return $this->normalizedEntity;
     }
@@ -315,6 +318,17 @@ class DisplayExtension extends \Twig_Extension
             $this->normalizedEntity[$fieldName] = '<i class="fa fa-check-circle-o" style="color:green"></i>';
         }else{
             $this->normalizedEntity[$fieldName] = '<i class="fa fa-times" style="color:red"></i>';
+        }
+    }
+
+    private function normalizeArray($fieldName)
+    {
+        $fieldValue = $this->normalizedEntity[$fieldName];
+        $this->normalizedEntity[$fieldName] = '';
+        foreach ($fieldValue as $value){
+            if (is_string($value)){
+                $this->normalizedEntity[$fieldName].= $value.'<br>';
+            }
         }
     }
 
