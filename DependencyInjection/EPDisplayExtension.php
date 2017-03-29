@@ -35,7 +35,7 @@ class EPDisplayExtension extends Extension
      */
     private function setupBundleConfigs(ContainerInterface $container, $configs)
     {
-        $globalConfig = $configs['global'];
+        $globalConfig = isset($configs['global'])? $configs['global']: [];
 
         //set image_render config as param
         if(isset($globalConfig['image_render'])){
